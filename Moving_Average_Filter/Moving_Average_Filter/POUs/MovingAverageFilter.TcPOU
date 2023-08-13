@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MovingAverageFilter" Id="{4977d736-bb6f-4b1e-953a-c5f4918e3ef7}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK MovingAverageFilter
+VAR_INPUT
+	InputValue							:REAL;	
+	tTaskCycleNumber					:INT;
+	SampleNumber						:INT;
+END_VAR
+VAR_OUTPUT
+	FilterValute						:REAL;
+END_VAR
+VAR
+	i									:INT;	
+	MainWorkingArra						:ARRAY[1..10] OF REAL;
+	WorkingArraySum						:REAL;
+	SumRange							:INT:=0;
+	CycleNumber							:INT:=0;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF tTaskCycleNumber=0 OR tTaskCycleNumber=1 THEN
+		    JMP WithoutFilter;
+	ELSE
+			JMP filter;
+END_IF
+
+filter:
+	FilterValute:=FilterValueMeth();
+//	RETURN;
+WithoutFilter:
+//	FilterValute:=InputValue;
+//	RETURN;]]></ST>
+    </Implementation>
+    <Method Name="FilterValueMeth" Id="{5ff84ea0-22d8-4944-8d69-e47a9dafbf8a}">
+      <Declaration><![CDATA[METHOD PRIVATE FilterValueMeth : real
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CycleNumber:=CycleNumber+1;
+IF CycleNumber=tTaskCycleNumber THEN
+	CycleNumber:=0;
+	WorkingArraySum:=0;	
+	SumRange:=SumRange+1;
+	MainWorkingArra[SumRange]:=InputValue;
+		FOR i:=1 TO SampleNumber BY 1 DO
+			WorkingArraySum:=MainWorkingArra[i]+WorkingArraySum;
+		END_FOR	
+		IF SumRange=SampleNumber THEN
+			SumRange:=0;
+		END_IF	
+END_IF
+FilterValueMeth:=WorkingArraySum/SampleNumber;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>
