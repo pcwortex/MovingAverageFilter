@@ -10,23 +10,17 @@
       <Children>
         <Node>
           <Title>DataPool</Title>
-          <Expanded>True</Expanded>
+          <Expanded>False</Expanded>
           <FileName></FileName>
           <Children>
             <Node>
-              <Title>adasd</Title>
+              <Title>FilterOutput</Title>
               <Expanded>False</Expanded>
               <FileName></FileName>
               <Children />
             </Node>
             <Node>
-              <Title>fOut</Title>
-              <Expanded>False</Expanded>
-              <FileName></FileName>
-              <Children />
-            </Node>
-            <Node>
-              <Title>noise</Title>
+              <Title>Noise</Title>
               <Expanded>False</Expanded>
               <FileName></FileName>
               <Children />
@@ -44,25 +38,13 @@
               <FileName></FileName>
               <Children>
                 <Node>
-                  <Title>adasd</Title>
+                  <Title>Noise</Title>
                   <Expanded>False</Expanded>
                   <FileName></FileName>
                   <Children />
                 </Node>
                 <Node>
-                  <Title>fOut</Title>
-                  <Expanded>False</Expanded>
-                  <FileName></FileName>
-                  <Children />
-                </Node>
-                <Node>
-                  <Title>fOut (1)</Title>
-                  <Expanded>False</Expanded>
-                  <FileName></FileName>
-                  <Children />
-                </Node>
-                <Node>
-                  <Title>noise</Title>
+                  <Title>FilterOutput</Title>
                   <Expanded>False</Expanded>
                   <FileName></FileName>
                   <Children />

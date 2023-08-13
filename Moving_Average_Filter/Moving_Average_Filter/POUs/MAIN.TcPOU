@@ -3,34 +3,27 @@
   <POU Name="MAIN" Id="{d7bdaa5f-7d00-4a04-ab7c-fcfc0897a0cc}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-FBCTRL_MOVING_AVERAGE  :FB_CTRL_MOVING_AVERAGE;
-	iejimas: REAL;
-	Output: LREAL;
-	modas: E_CTRL_MODE;
-	ff: ST_CTRL_MOVING_AVERAGE_PARAMS;
-	mm: ST_CTRL_NOISE_GENERATOR_PARAMS;
-	marius: ARRAY[1..100] OF REAL;
-	MovingAverageFilter: MovingAverageFilter;
-	FB_CTRL_NOISE_GENERATOR:FB_CTRL_NOISE_GENERATOR;
-	adasd: REAL;
-	noise: LREAL;
+	StParams									:ST_CTRL_NOISE_GENERATOR_PARAMS;
+	MovingAverageFilter							:MovingAverageFilter;
+	FB_CTRL_NOISE_GENERATOR						:FB_CTRL_NOISE_GENERATOR;
+	FilterOutput								:REAL;
+	Noise										:LREAL;
+	NumberOfCycle								:INT:=5;
+	nSample										:INT:=1;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[ff.nSamplesToFilter:=5;
-ff.tCtrlCycleTime:=T#5H;
-ff.tTaskCycleTime:=T#1H;
-ff.pWorkArray_ADR:=ADR(marius);
-ff.nWorkArray_SIZEOF:=SIZEOF(marius);
+      <ST><![CDATA[(****************************************************************Noise Generator***********************************************************)
+StParams.fAmplitude:=10;
+StParams.tCtrlCycleTime:=T#10MS;
+StParams.tTaskCycleTime:=T#10MS;
+FB_CTRL_NOISE_GENERATOR(fManSyncValue:=12.0,emode:=ectrl_mode_active,Fout=>noise,stParams:=StParams);
+(***************************************************************Moving Average Filter******************************************************) 
+MovingAverageFilter(inputValue:=LREAL_TO_REAL(Noise),tTaskCycleNumber:=NumberOfCycle,SampleNumber:=nSample,FilterValute=>FilterOutput);
 
-mm.fAmplitude:=24;
-mm.tCtrlCycleTime:=T#10MS;
-mm.tTaskCycleTime:=T#10MS;
 
-FBCTRL_MOVING_AVERAGE(	fIn:=noise ,  	eMode:=ectrl_mode_active, 	fOut=>Output, 	stParams:=ff ); 
-MovingAverageFilter(InputValue:=noise, tTaskCycleNumber:=5,SampleNumber:=5,FilterValute=>adasd);
-FB_CTRL_NOISE_GENERATOR(fManSyncValue:=12.0,emode:=ectrl_mode_active,Fout=>noise,stParams:=mm);
- ]]></ST>
+
+]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>
